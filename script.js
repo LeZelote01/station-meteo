@@ -331,6 +331,7 @@ themeToggle.addEventListener('click', () => {
     });
 });
 
+
 fetchData();
 setInterval(fetchData, 15000);
 fetchHistory('24h');
