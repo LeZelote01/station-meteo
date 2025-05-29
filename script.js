@@ -7,87 +7,46 @@ const lastURL = `https://api.thingspeak.com/channels/${channelID}/feeds/last.jso
 let currentHistoryPeriod = '24h';
 
 // Créer les graphiques pour l'onglet Temps Réel (24h)
-const realTimeCharts = {
-    realTimeTempChart: new Chart(document.getElementById('realTimeTempChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Température (°C)', data: [], borderColor: 'red', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimeHumChart: new Chart(document.getElementById('realTimeHumChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Humidité (%)', data: [], borderColor: 'blue', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimePressChart: new Chart(document.getElementById('realTimePressChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Pression (hPa)', data: [], borderColor: 'green', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimeAirChart: new Chart(document.getElementById('realTimeAirChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Qualité air (ppm)', data: [], borderColor: 'purple', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimeLightChart: new Chart(document.getElementById('realTimeLightChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Luminosité (lux)', data: [], borderColor: 'orange', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimeSoundChart: new Chart(document.getElementById('realTimeSoundChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Niveau sonore (dB)', data: [], borderColor: 'gray', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    realTimeMotionChart: new Chart(document.getElementById('realTimeMotionChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Mouvement (0/1)', data: [], borderColor: 'black', fill: false, stepped: true }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    })
-};
+const realTimeCharts = {};
+['Temp', 'Hum', 'Press', 'Air', 'Light', 'Sound', 'Motion'].forEach(type => {
+    const canvas = document.getElementById(`realTime${type}Chart`);
+    if (canvas) {
+        realTimeCharts[`realTime${type}Chart`] = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: { labels: Array(96).fill(''), datasets: [{ label: `${type === 'Temp' ? 'Température (°C)' : type === 'Hum' ? 'Humidité (%)' : type === 'Press' ? 'Pression (hPa)' : type === 'Air' ? 'Qualité air (ppm)' : type === 'Light' ? 'Luminosité (lux)' : type === 'Sound' ? 'Niveau sonore (dB)' : 'Mouvement (0/1)'}`, data: Array(96).fill(null), borderColor: type === 'Temp' ? 'red' : type === 'Hum' ? 'blue' : type === 'Press' ? 'green' : type === 'Air' ? 'purple' : type === 'Light' ? 'orange' : type === 'Sound' ? 'gray' : 'black', fill: false, stepped: type === 'Motion' }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    } else {
+        console.error(`Canvas with id 'realTime${type}Chart' not found`);
+    }
+});
 
 // Créer les graphiques pour l'onglet Historique
-const charts = {
-    tempChart: new Chart(document.getElementById('tempChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Température (°C)', data: [], borderColor: 'red', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    humChart: new Chart(document.getElementById('humChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Humidité (%)', data: [], borderColor: 'blue', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    pressChart: new Chart(document.getElementById('pressChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Pression (hPa)', data: [], borderColor: 'green', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    airChart: new Chart(document.getElementById('airChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Qualité air (ppm)', data: [], borderColor: 'purple', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    lightChart: new Chart(document.getElementById('lightChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Luminosité (lux)', data: [], borderColor: 'orange', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    soundChart: new Chart(document.getElementById('soundChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Niveau sonore (dB)', data: [], borderColor: 'gray', fill: false }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    }),
-    motionChart: new Chart(document.getElementById('motionChart').getContext('2d'), {
-        type: 'line',
-        data: { labels: [], datasets: [{ label: 'Mouvement (0/1)', data: [], borderColor: 'black', fill: false, stepped: true }] },
-        options: { responsive: true, maintainAspectRatio: false }
-    })
-};
+const charts = {};
+['Temp', 'Hum', 'Press', 'Air', 'Light', 'Sound', 'Motion'].forEach(type => {
+    const canvas = document.getElementById(`${type.toLowerCase()}Chart`);
+    if (canvas) {
+        charts[`${type.toLowerCase()}Chart`] = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: { labels: Array(96).fill(''), datasets: [{ label: `${type === 'Temp' ? 'Température (°C)' : type === 'Hum' ? 'Humidité (%)' : type === 'Press' ? 'Pression (hPa)' : type === 'Air' ? 'Qualité air (ppm)' : type === 'Light' ? 'Luminosité (lux)' : type === 'Sound' ? 'Niveau sonore (dB)' : 'Mouvement (0/1)'}`, data: Array(96).fill(null), borderColor: type === 'Temp' ? 'red' : type === 'Hum' ? 'blue' : type === 'Press' ? 'green' : type === 'Air' ? 'purple' : type === 'Light' ? 'orange' : type === 'Sound' ? 'gray' : 'black', fill: false, stepped: type === 'Motion' }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+    } else {
+        console.error(`Canvas with id '${type.toLowerCase()}Chart' not found`);
+    }
+});
 
 // Fonction pour afficher/masquer le loader
 function toggleLoader(show) {
     const loader = document.getElementById('loader');
     loader.classList.toggle('d-none', !show);
+}
+
+// Fonction pour retirer les classes skeleton
+function removeSkeletons() {
+    document.querySelectorAll('.skeleton, .canvas-skeleton').forEach(element => {
+        element.classList.remove('skeleton', 'canvas-skeleton');
+    });
 }
 
 async function fetchData() {
@@ -215,6 +174,7 @@ async function fetchData() {
                 </div>
             </div>
         `;
+        removeSkeletons(); // Retire les skeletons après le chargement des données
     } catch (error) {
         console.error("Erreur lors de la récupération des données en temps réel:", error);
         document.getElementById('realTimeData').innerHTML = `
@@ -273,6 +233,7 @@ async function fetchHistory(period = currentHistoryPeriod) {
             charts[chartKey].update();
             console.log(`Updated ${chartKey} with ${datasets[field].length} data points`);
         });
+        removeSkeletons(); // Retire les skeletons après le chargement des données
     } catch (error) {
         console.error("Erreur lors de la récupération des données historiques:", error);
         document.getElementById('realTimeData').innerHTML = `
@@ -336,6 +297,7 @@ async function fetchCustomHistory() {
             charts[chartKey].update();
             console.log(`Updated ${chartKey} with ${datasets[field].length} data points`);
         });
+        removeSkeletons(); // Retire les skeletons après le chargement des données
     } catch (error) {
         console.error("Erreur lors de la récupération des données historiques personnalisées:", error);
         document.getElementById('realTimeData').innerHTML = `

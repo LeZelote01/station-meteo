@@ -13,12 +13,26 @@ h1, h3 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: all 0.3s ease;
+}
+
+.container::before {
+    content: "";
+    flex-grow: 1;
 }
 
 /* Thème sombre */
 body.dark-mode {
     background-color: #1a1a1a;
     color: #e0e0e0;
+}
+
+body.dark-mode .container {
+    background-color: #1a1a1a;
 }
 
 body.dark-mode .nav-tabs .nav-link {
@@ -77,11 +91,20 @@ body.dark-mode .btn-primary:hover {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.3s ease;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+    width: 100%;
+    text-align: center;
 }
 
 .card.safe {
@@ -108,11 +131,25 @@ body.dark-mode .card.danger {
     border-left-color: #a52834;
 }
 
+/* Style pour les conteneurs de canvas */
+.canvas-skeleton {
+    max-height: 250px;
+    width: 100%;
+    height: 250px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
 /* Graphiques */
 canvas {
     max-height: 250px;
-    margin-bottom: 20px;
     width: 100%;
+    height: 250px !important;
+    margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
@@ -145,9 +182,49 @@ body.dark-mode .form-control:focus {
 }
 
 /* Loader */
+#loader {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loader.d-none {
+    visibility: hidden;
+}
+
 .spinner-border {
     width: 2rem;
     height: 2rem;
+}
+
+/* Style général des skeletons */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    color: transparent !important;
+    pointer-events: none;
+    border: none;
+}
+
+/* Animation de chargement (scintillement) */
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Ajustements pour le thème sombre */
+body.dark-mode .skeleton {
+    background: linear-gradient(90deg, #2c2c2c 25%, #3a3a3a 50%, #2c2c2c 75%);
+}
+
+/* S'assurer que les éléments skeleton maintiennent leur taille */
+.skeleton.card, .skeleton.nav-link, .skeleton.btn, .skeleton.form-control {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Responsive Design */

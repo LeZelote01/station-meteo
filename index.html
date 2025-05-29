@@ -21,12 +21,12 @@
         <!-- Navigation par onglets -->
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="real-time-tab" data-bs-toggle="tab" data-bs-target="#real-time" type="button" role="tab" aria-controls="real-time" aria-selected="true">
+                <button class="nav-link active skeleton" id="real-time-tab" data-bs-toggle="tab" data-bs-target="#real-time" type="button" role="tab" aria-controls="real-time" aria-selected="true">
                     <i class="bi bi-clock-fill me-2"></i>Temps Réel
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                <button class="nav-link skeleton" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
                     <i class="bi bi-archive-fill me-2"></i>Historique
                 </button>
             </li>
@@ -43,42 +43,146 @@
         <div class="tab-content" id="myTabContent">
             <!-- Onglet Temps Réel -->
             <div class="tab-pane fade show active" id="real-time" role="tabpanel" aria-labelledby="real-time-tab">
-                <div id="realTimeData" class="mt-3"></div>
+                <div id="realTimeData" class="mt-3">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card skeleton">
+                                <div class="card-body">
+                                    <p><strong>Température:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                            <div class="card skeleton mt-2">
+                                <div class="card-body">
+                                    <p><strong>Humidité:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                            <div class="card skeleton mt-2">
+                                <div class="card-body">
+                                    <p><strong>Pression:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card skeleton">
+                                <div class="card-body">
+                                    <p><strong>Qualité air:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                            <div class="card skeleton mt-2">
+                                <div class="card-body">
+                                    <p><strong>Luminosité:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                            <div class="card skeleton mt-2">
+                                <div class="card-body">
+                                    <p><strong>Niveau sonore:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card skeleton">
+                                <div class="card-body">
+                                    <p><strong>Mouvement:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                            <div class="card skeleton mt-2">
+                                <div class="card-body">
+                                    <p><strong>Confort:</strong> Chargement...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h3 class="mt-4">Historique des dernières 24 heures</h3>
                 <div class="row">
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeTempChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeHumChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimePressChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeAirChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeLightChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeSoundChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="realTimeMotionChart"></canvas></div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeTempChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeHumChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimePressChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeAirChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeLightChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeSoundChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="realTimeMotionChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Onglet Historique -->
             <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
                 <div class="mb-3 text-center">
-                    <button class="btn btn-primary mx-1" onclick="fetchHistory('24h')"><i class="bi bi-hourglass-split me-2"></i>24h</button>
-                    <button class="btn btn-primary mx-1" onclick="fetchHistory('7d')"><i class="bi bi-calendar-week me-2"></i>7j</button>
-                    <button class="btn btn-primary mx-1" onclick="fetchHistory('30d')"><i class="bi bi-calendar-month me-2"></i>30j</button>
-                    <!-- Sélecteur de dates personnalisées -->
+                    <button class="btn btn-primary mx-1 skeleton" onclick="fetchHistory('24h')"><i class="bi bi-hourglass-split me-2"></i>24h</button>
+                    <button class="btn btn-primary mx-1 skeleton" onclick="fetchHistory('7d')"><i class="bi bi-calendar-week me-2"></i>7j</button>
+                    <button class="btn btn-primary mx-1 skeleton" onclick="fetchHistory('30d')"><i class="bi bi-calendar-month me-2"></i>30j</button>
                     <div class="mt-3">
                         <label for="startDate" class="me-2">Début:</label>
-                        <input type="date" id="startDate" class="form-control d-inline-block w-auto me-3">
+                        <input type="date" id="startDate" class="form-control d-inline-block w-auto me-3 skeleton">
                         <label for="endDate" class="me-2">Fin:</label>
-                        <input type="date" id="endDate" class="form-control d-inline-block w-auto me-3">
-                        <button class="btn btn-primary" onclick="fetchCustomHistory()"><i class="bi bi-search me-2"></i>Afficher</button>
+                        <input type="date" id="endDate" class="form-control d-inline-block w-auto me-3 skeleton">
+                        <button class="btn btn-primary skeleton" onclick="fetchCustomHistory()"><i class="bi bi-search me-2"></i>Afficher</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="tempChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="humChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="pressChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="airChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="lightChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="soundChart"></canvas></div>
-                    <div class="col-md-6 col-lg-4 mb-3"><canvas id="motionChart"></canvas></div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="tempChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="humChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="pressChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="airChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="lightChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="soundChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="skeleton canvas-skeleton">
+                            <canvas id="motionChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
